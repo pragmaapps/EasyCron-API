@@ -77,29 +77,11 @@ function add(task, expression, API_URL) {
 		}
 
 		if (posts !== null) {
-			// try {
 				if (typeof posts === "object") {
-					const keys = Object.keys(posts);
-					const params = [];
-					keys.forEach((key) => {
-						let value = posts[key];
-						if(typeof value === "function"){
-							reject(new Error("A function cannot be sent in payload"));
-						} else if (typeof value === "object") {
-							value = JSON.stringify(value);
-						}
-						
-						params.push(key + '=' + value);
-					});
-					queryString += "&posts=" + encodeURIComponent(params.join("&"));
-					// queryString += "&posts=" + encodeURIComponent("payload=" + JSON.stringify(posts));
+					queryString += "&posts=" + encodeURIComponent("payload=" + JSON.stringify(posts));
 				} else {
 					reject(new Error("Expected payload to be an object"));
 				}
-				// queryString += "&posts="encodeURIComponent(JSON.stringify(payload));
-			// } catch (e) {
-			// 	reject(new Error("Invalid payload received in input"));
-			// }
 		}
 		got.get(API_URL + queryString)
 			.then(res => {
