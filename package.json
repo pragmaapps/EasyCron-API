@@ -1,0 +1,14 @@
+{
+  "name": "easy-cron",
+  "version": "1.0.0",
+  "description": "Node.js wrapper for Easy Cron REST API",
+  "main": "cron.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "iPragmatech",
+  "license": "ISC",
+  "dependencies": {
+    "got": "^8.3.1"
+  }
+}
