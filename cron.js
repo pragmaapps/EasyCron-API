@@ -17,9 +17,6 @@ function add(task, expression, API_URL) {
 				payload: posts = null
 		} = task;
 
-		if (minute === "*" && hour === "*" && day === "*" && month === "*") {
-			reject(new Error("Provide at least minute, hour, day or month in input"));
-		}
 		let queryString;
 		if (expression) {
 			if (!(typeof cron_expression === "string" && cron_expression.length > 0)) {
@@ -27,6 +24,9 @@ function add(task, expression, API_URL) {
 			}
 			queryString = "&cron_expression=" + encodeURIComponent(cron_expression);
 		} else {
+			if (minute === "*" && hour === "*" && day === "*" && month === "*") {
+				reject(new Error("Provide at least minute, hour, day or month in input"));
+			}
 			const params = {
 				minute,
 				hour,
