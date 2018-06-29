@@ -60,7 +60,7 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 	*   `url`: It refers to the URL which will be called by the cron job.
 	*   `method (optional, defaults to GET)`: It specifies the http method to be used for the request.
 	*   `headers (optional)`: It specifies the headers to be used for the request.
-	*   `payload (optional): `It specifies the json object to be sent in the body of request. When this cron job will run, easy cron will send a POST request to the specified URL with payload in body of the request. You can get the payload as follows:
+	*   `payload (optional)`: It specifies the json object to be sent in the body of request. When this cron job will run, easy cron will send a POST request to the specified URL with payload in body of the request. You can get the payload as follows:
 
 	    ```
 	    let payload = JSON.parse(request.body.payload);
