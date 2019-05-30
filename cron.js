@@ -86,8 +86,8 @@ function add(task, expression, API_URL) {
 		got.get(API_URL + queryString)
 			.then(res => {
 				const response = JSON.parse(res.body);
-				if (response.error) {
-					reject(response.error);
+				if(response.error){
+					return reject(new Error(response.error.message));
 				}
 				resolve(response);
 			})
@@ -112,7 +112,7 @@ function changeState (task = {}, API_URL) {
 			.then(res => {
 				const response = JSON.parse(res.body);
 				if (response.error) {
-					reject(response.error);
+					return reject(new Error(response.error.message));
 				}
 				resolve(response);
 			})
