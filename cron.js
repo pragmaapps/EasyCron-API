@@ -125,6 +125,23 @@ function changeState (task = {}, API_URL) {
 	});
 }
 
+function list(API_URL){
+	return got.get(API_URL + "&size=10000")
+		.then(res => {
+			const response = JSON.parse(res.body);
+			if (response.error) {
+				return Promise.reject(new Error(response.error.message));
+			}
+			return response;
+		})
+		.catch(error => {
+			if (error.name) {
+				error.message = error.name;
+			}
+			return Promise.reject(error);
+		});
+}
+
 function easyCron(config = {}) {
 	if (!(config && typeof config.token === "string" && config.token.length !== 0)) {
 		throw new Error("Token not found");
@@ -137,7 +154,8 @@ function easyCron(config = {}) {
 		addCronExp: (task) => add(task, true, API_URL + "add?token=" + token),
 		enable: (task) => changeState (task, API_URL + "enable?token=" + token),
 		disable: (task) => changeState (task, API_URL + "disable?token=" + token),
-		delete: (task) => changeState (task, API_URL + "delete?token=" + token)
+		delete: (task) => changeState (task, API_URL + "delete?token=" + token),
+		list: () => list(API_URL + "list?token=" + token)
 	}
 
 };
