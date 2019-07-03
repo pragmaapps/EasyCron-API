@@ -14,7 +14,9 @@ function add(task, expression, API_URL) {
 				url = null,
 				method: http_method = null,
 				headers: http_headers = null,
-				payload: posts = null
+				payload: posts = null,
+				name = null,
+				groupId = 0
 		} = task;
 
 		let queryString;
@@ -83,6 +85,22 @@ function add(task, expression, API_URL) {
 					reject(new Error("Expected payload to be an object"));
 				}
 		}
+
+		if(name !== null){
+			if(typeof name !== "string"){
+				reject(new Error("Expected name to be a string"));
+			}
+			queryString += "&cron_job_name=" + encodeURIComponent(name);
+		}
+
+		if(groupId !== 0){
+			if(typeof groupId !== "number"){
+				reject(new Error("Expected groupId to be a number"));
+			}
+			groupId = Number(groupId);
+			queryString += "&group_id=" + encodeURIComponent(groupId);
+		}
+
 		got.get(API_URL + queryString)
 			.then(res => {
 				const response = JSON.parse(res.body);
