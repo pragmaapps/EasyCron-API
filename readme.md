@@ -27,6 +27,8 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 
 	```
 	 easycron.add({
+		name: "My Cron Job",
+		groupId: 10375,
 	 	minute: 8,
 	 	hour: 9,
 	 	day: 5,
@@ -53,6 +55,8 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 
 
 
+	*   `name (optional)`: It refers to the name of the cron job.
+	*   `groupId (optional)`: It refers to the id of the group where cron job should be kept.
 	*   `minute, hour, day, month`: These are used to specify a specific time when the cron job will run.
 		*   In this example, the cron job will run at every 5th minute from 9:08 to 9:59 on 5th December every year.
 		*    You must specify at least one of these options. If any option is omitted, that option is read as "every <option>". For eg., if minute is not specified, then it is assumed to be "every minute" and the job will run at every minute from 9:08 to 9:59 on 5th December every year.
@@ -75,6 +79,8 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 
 	```
     easycron.addCronExp({
+		name: "My Cron Job",
+		groupId: 10375,
     	cron: "4-10/2 1 5 8 *",
     	url: "<url>",
     	method: 'POST',
