@@ -2,9 +2,10 @@ const got = require("got");
 const error = (message) => {
 	return {message};
 }
-function add(task, expression, API_URL) {
+function addUpdate(task, expression, update, API_URL) {
 	return new Promise((resolve, reject) => {
 		let {
+			id = null,
 			minute = '*',
 				hour = '*',
 				day = '*',
@@ -16,7 +17,8 @@ function add(task, expression, API_URL) {
 				headers: http_headers = null,
 				payload: posts = null,
 				name = null,
-				groupId = 0
+				groupId = 0,
+				timezone = null
 		} = task;
 
 		let queryString;
@@ -101,6 +103,20 @@ function add(task, expression, API_URL) {
 			queryString += "&group_id=" + encodeURIComponent(groupId);
 		}
 
+		if(timezone !== null){
+			if(typeof timezone !== "string"){
+				reject(new Error("Expected timezone to be a string"));
+			}
+			queryString += "&timezone_from=2&timezone=" + encodeURIComponent(timezone);
+		}
+
+		if(update){
+			if(!["string", "number"].includes(typeof id)){
+				reject(new Error("Expected id to be a string or a number"));
+			}
+			queryString += "&id=" + encodeURIComponent(id);
+		}
+
 		got.get(API_URL + queryString)
 			.then(res => {
 				const response = JSON.parse(res.body);
@@ -153,6 +169,7 @@ function list(API_URL){
 			return response;
 		})
 		.catch(error => {
+			console.error(error);
 			if (error.name) {
 				error.message = error.name;
 			}
@@ -168,8 +185,9 @@ function easyCron(config = {}) {
 	const token = config.token;
 
 	return {
-		add: (task) => add(task, false, API_URL + "add?token=" + token),
-		addCronExp: (task) => add(task, true, API_URL + "add?token=" + token),
+		add: (task) => addUpdate(task, false, false, API_URL + "add?token=" + token),
+		addCronExp: (task) => addUpdate(task, true, false, API_URL + "add?token=" + token),
+		edit: (task) => addUpdate(task, Boolean(task.cron), true, API_URL + "edit?token=" + token),
 		enable: (task) => changeState (task, API_URL + "enable?token=" + token),
 		disable: (task) => changeState (task, API_URL + "disable?token=" + token),
 		delete: (task) => changeState (task, API_URL + "delete?token=" + token),

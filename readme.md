@@ -1,3 +1,4 @@
+
 # EasyCron Node.js API
 
 EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's REST API. The recommended way to use this API for our notification use cases is to call the add function of the API inside a firebase database trigger, for example, that is listening for the start of a routine by a user, supplying the necessary parameters like userID and routineID in the payload. At this point, the Job ID should be stored in the firebase, for that routine of the user, within an attribute. Now when the notify function is called by the job, the Job ID should be obtained using the IDs in the payload and also delete the job.
@@ -35,6 +36,7 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 	 	month: 12,
 	 	url: "<URL>",
 	 	method: 'POST',
+	 	timezone: "America/Santiago",
 	 	headers:{
 	 		"Header-Name-1": "value 1",
 	 		"Header-Name-2": "value 2"
@@ -63,6 +65,7 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 	*   `minuteInterval (optional)`: It is used to specify that the cron job will repeat itself in intervals of specified minutes.
 	*   `url`: It refers to the URL which will be called by the cron job.
 	*   `method (optional, defaults to GET)`: It specifies the http method to be used for the request.
+	*   `timezone`: It specifies the timezone to be used for the request. Must be a valid name from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 	*   `headers (optional)`: It specifies the headers to be used for the request.
 	*   `payload (optional)`: It specifies the json object to be sent in the body of request. When this cron job will run, easy cron will send a POST request to the specified URL with payload in body of the request. You can get the payload as follows:
 
@@ -84,6 +87,7 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
     	cron: "4-10/2 1 5 8 *",
     	url: "<url>",
     	method: 'POST',
+    	timezone: "America/Santiago",
     	headers:{
     		"Header-Name-1": "value 1",
     		"Header-Name-2": "value 2"
@@ -101,7 +105,42 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 	Explanation: 
 	*   `cron`: It specifies a cron expression for the cron job. Please refer to [this link](https://www.easycron.com/faq/What-cron-expression-does-easycron-support) to see what expressions are compatible with EasyCron.
 	*   Other keys are the same as `cron.add`
-3.  <strong><code>easycron.enable</code></strong>
+3.  <strong><code>easycron.edit</code></strong>
+
+	   It updated an existing cron job and returns a Promise. 
+
+
+	Example:
+
+
+	```
+    easycron.edit({
+		name: "My Cron Job",
+		groupId: 10375,
+    	cron: "4-10/2 1 5 8 *",
+    	url: "<url>",
+    	method: 'POST',
+    	timezone: "America/Santiago",
+    	headers:{
+    		"Header-Name-1": "value 1",
+    		"Header-Name-2": "value 2"
+    	},
+    	payload: {
+    		key1: "value 1",
+    		key2: "value 2"
+    	}
+    }).then(function(response) {
+    	console.log("Cron Job Id is " + response.cron_job_id);
+    }).catch(function(error) {
+    	console.log(error)
+    });
+	```
+	Explanation: 
+	* `id`: This specifies the existing cron job id which needs to be updated.
+	* `cron`: It specifies a cron expression for the cron job. Please refer to [this link](https://www.easycron.com/faq/What-cron-expression-does-easycron-support) to see what expressions are compatible with EasyCron. If cron is provided, it is given preference over (minute, hour, day, month, week).
+	*   Other keys are the same as `cron.add`
+
+4.  <strong><code>easycron.enable</code></strong>
 
 	   It is used to enable a cron job.
 
@@ -120,7 +159,7 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 	```
 	Explanation: 
 	*   `id`: It specifies the id of the cron job.
-4.  <strong><code>easycron.disable</code></strong>
+5.  <strong><code>easycron.disable</code></strong>
 
     It is used to disable a cron job.
 
@@ -136,7 +175,7 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
     ```
     Explanation: 
 	*   `id`: It specifies the id of the cron job.
-5.  <strong><code>easycron.delete</code></strong>
+6.  <strong><code>easycron.delete</code></strong>
 
 	It is used to delete a cron job.
 
