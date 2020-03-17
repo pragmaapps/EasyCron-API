@@ -1,4 +1,6 @@
 const got = require("got");
+
+const timezones = require("./timezones");
 const error = (message) => {
 	return {message};
 }
@@ -191,7 +193,8 @@ function easyCron(config = {}) {
 		enable: (task) => changeState (task, API_URL + "enable?token=" + token),
 		disable: (task) => changeState (task, API_URL + "disable?token=" + token),
 		delete: (task) => changeState (task, API_URL + "delete?token=" + token),
-		list: () => list(API_URL + "list?token=" + token)
+		list: () => list(API_URL + "list?token=" + token),
+		isValidTimezone: ({name}) => Boolean(timezones[name])
 	}
 
 };

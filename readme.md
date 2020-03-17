@@ -192,3 +192,14 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 	```
 	Explanation:
 	*   `id`: It specifies the id of the cron job.
+7.  <strong><code>easycron.isValidTimezone</code></strong>
+
+	It is used to a list of timezone names supported by EasyCron. It can be used for validating timezone values. This os a synchronous function and returns a `true/false` result;
+
+	Example:
+	```
+    easycron.isValidTimezone({
+    	name: "America/Santiago")
+	```
+	Explanation:
+	*   `name`: It specifies the name of the timezone.
