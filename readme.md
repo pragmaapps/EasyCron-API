@@ -65,7 +65,7 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 	*   `minuteInterval (optional)`: It is used to specify that the cron job will repeat itself in intervals of specified minutes.
 	*   `url`: It refers to the URL which will be called by the cron job.
 	*   `method (optional, defaults to GET)`: It specifies the http method to be used for the request.
-	*   `timezone`: It specifies the timezone to be used for the request. Must be a valid name from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+	*   `timezone`: It specifies the timezone to be used for the request. Must be a valid name from [tz database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) 
 	*   `headers (optional)`: It specifies the headers to be used for the request.
 	*   `payload (optional)`: It specifies the json object to be sent in the body of request. When this cron job will run, easy cron will send a POST request to the specified URL with payload in body of the request. You can get the payload as follows:
 
@@ -115,6 +115,7 @@ EasyCron is an online cron service. This is a Node.js wrapper around EasyCron's 
 
 	```
     easycron.edit({
+    	id: "123456",
 		name: "My Cron Job",
 		groupId: 10375,
     	cron: "4-10/2 1 5 8 *",
