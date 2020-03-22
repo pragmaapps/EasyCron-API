@@ -109,6 +109,8 @@ function addUpdate(task, expression, update, API_URL) {
 			if(typeof timezone !== "string"){
 				reject(new Error("Expected timezone to be a string"));
 			}
+			const substitution = timezones.substitutions[timezone];
+			timezone = (!timezones.supported[timezone] && substitution) ? substitution : timezone);
 			queryString += "&timezone_from=2&timezone=" + encodeURIComponent(timezone);
 		}
 
@@ -194,7 +196,7 @@ function easyCron(config = {}) {
 		disable: (task) => changeState (task, API_URL + "disable?token=" + token),
 		delete: (task) => changeState (task, API_URL + "delete?token=" + token),
 		list: () => list(API_URL + "list?token=" + token),
-		isValidTimezone: ({name}) => Boolean(timezones[name])
+		isValidTimezone: ({name}) => Boolean(timezones.supported[name] || timezones.substitutions[name])
 	}
 
 };
