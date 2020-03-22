@@ -110,7 +110,7 @@ function addUpdate(task, expression, update, API_URL) {
 				reject(new Error("Expected timezone to be a string"));
 			}
 			const substitution = timezones.substitutions[timezone];
-			timezone = (!timezones.supported[timezone] && substitution) ? substitution : timezone);
+			timezone = (!timezones.supported[timezone] && substitution) ? substitution : timezone;
 			queryString += "&timezone_from=2&timezone=" + encodeURIComponent(timezone);
 		}
 
