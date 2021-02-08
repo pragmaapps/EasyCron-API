@@ -123,6 +123,8 @@ function addUpdate(task, expression, update, API_URL) {
 
 		got.get(API_URL + queryString)
 			.then(res => {
+				console.log('Type of response:', typeof res.body);
+				console.log(res.body);
 				const response = JSON.parse(res.body);
 				if(response.error){
 					return reject(new Error(response.error.message));
@@ -148,6 +150,8 @@ function changeState (task = {}, API_URL) {
 		}
 		got.get(API_URL + "&id=" + id)
 			.then(res => {
+				console.log('Type of response:', typeof res.body);
+				console.log(res.body);
 				const response = JSON.parse(res.body);
 				if (response.error) {
 					return reject(new Error(response.error.message));
@@ -166,6 +170,8 @@ function changeState (task = {}, API_URL) {
 function list(API_URL){
 	return got.get(API_URL + "&size=10000")
 		.then(res => {
+			console.log('Type of response:', typeof res.body);
+			console.log(res.body);
 			const response = JSON.parse(res.body);
 			if (response.error) {
 				return Promise.reject(new Error(response.error.message));
