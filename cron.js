@@ -1,4 +1,4 @@
-const got = require("got");
+const axios = require("axios");
 
 const timezones = require("./timezones");
 const error = (message) => {
@@ -121,21 +121,22 @@ function addUpdate(task, expression, update, API_URL) {
 			queryString += "&id=" + encodeURIComponent(id);
 		}
 
-		got.get(API_URL + queryString)
+		axios.get(API_URL + queryString)
 			.then(res => {
-				console.log('Type of response:', typeof res.body);
-				console.log(res.body);
-				const response = JSON.parse(res.body);
+				console.log('Type of response:', typeof res.data);
+				console.log(res.data);
+				const response = res.data;
 				if(response.error){
 					return reject(new Error(response.error.message));
 				}
 				resolve(response);
 			})
 			.catch(error => {
-				if (error.name) {
-					error.message = error.name;
+				const err = error.response && error.response.data || error;
+				if (err.name) {
+					err.message = error.name;
 				}
-				reject(error);
+				reject(err);
 			});
 	});
 }
@@ -148,42 +149,43 @@ function changeState (task = {}, API_URL) {
 		} else if (!((typeof id === "string" && id.length > 0) || typeof id === "number")) {
 			reject(new Error("Invalid cron id received in input"));
 		}
-		got.get(API_URL + "&id=" + id)
+		axios.get(API_URL + "&id=" + id)
 			.then(res => {
-				console.log('Type of response:', typeof res.body);
-				console.log(res.body);
-				const response = JSON.parse(res.body);
-				if (response.error) {
+				console.log('Type of response:', typeof res.data);
+				console.log(res.data);
+				const response = res.data;
+				if(response.error){
 					return reject(new Error(response.error.message));
 				}
 				resolve(response);
 			})
 			.catch(error => {
-				if (error.name) {
-					error.message = error.name;
+				const err = error.response && error.response.data || error;
+				if (err.name) {
+					err.message = error.name;
 				}
-				reject(error);
+				reject(err);
 			});
 	});
 }
 
 function list(API_URL){
-	return got.get(API_URL + "&size=10000")
+	return axios.get(API_URL + "&size=10000")
 		.then(res => {
-			console.log('Type of response:', typeof res.body);
-			console.log(res.body);
-			const response = JSON.parse(res.body);
+			console.log('Type of response:', typeof res.data);
+			console.log(res.data);
+			const response = res.data;
 			if (response.error) {
 				return Promise.reject(new Error(response.error.message));
 			}
 			return response;
 		})
 		.catch(error => {
-			console.error(error);
-			if (error.name) {
-				error.message = error.name;
+			const err = error.response && error.response.data || error;
+			if (err.name) {
+				err.message = error.name;
 			}
-			return Promise.reject(error);
+			return Promise.reject(err);
 		});
 }
 
