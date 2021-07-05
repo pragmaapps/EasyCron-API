@@ -85,6 +85,7 @@ function addUpdate(task, expression, update, API_URL) {
 		if (posts !== null) {
 				if (typeof posts === "object") {
 					queryString += "&posts=" + encodeURIComponent("payload=" + JSON.stringify(posts));
+					queryString += "&http_message_body=" + encodeURIComponent("payload=" + JSON.stringify(posts));
 				} else {
 					reject(new Error("Expected payload to be an object"));
 				}
